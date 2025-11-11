@@ -1,38 +1,382 @@
-.App {
-  text-align: center;
+.app-shell {
+  min-height: 100vh;
+  padding: 3.5rem 1.5rem 4rem;
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
+.layout {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  gap: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  align-items: start;
+  direction: rtl;
+}
+
+.form-panel {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 24px;
+  padding: 2.25rem 2rem;
+  box-shadow: 0 25px 50px -25px rgba(63, 41, 16, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+.form-panel h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  color: #3f2910;
+  letter-spacing: 0.02em;
+}
+
+.subtitle {
+  margin: 0.75rem 0 2rem;
+  color: rgba(63, 41, 16, 0.7);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.form-fields {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.field-label {
+  font-weight: 600;
+  color: #5c3a19;
+  letter-spacing: 0.01em;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(92, 58, 25, 0.25);
+  background: rgba(255, 255, 255, 0.75);
+  font-size: 1rem;
+  font-family: inherit;
+  color: #3c2811;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  text-align: right;
+}
+
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: rgba(92, 58, 25, 0.55);
+  box-shadow: 0 0 0 4px rgba(146, 99, 52, 0.2);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.form-actions button {
+  padding: 0.8rem 1.4rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: rgba(92, 58, 25, 0.1);
+  color: #5c3a19;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.form-actions button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px -12px rgba(63, 41, 16, 0.4);
+}
+
+.form-actions button:disabled {
+  pointer-events: none;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+.form-actions button.primary {
+  background: linear-gradient(120deg, #c08c5d, #9d6c3b);
+  color: #fffef9;
+}
+
+.form-actions button.primary:hover {
+  background: linear-gradient(120deg, #b58054, #8e5f34);
+}
+
+.ghost {
+  background: transparent;
+  border: 1px dashed rgba(92, 58, 25, 0.45) !important;
+}
+
+.ghost:hover {
+  background: rgba(92, 58, 25, 0.05);
+}
+
+.share-button {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.85rem 1.4rem;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(120deg, #4d90b5, #367092);
+  color: #fdfcf9;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.share-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px -12px rgba(0, 53, 89, 0.4);
+  background: linear-gradient(120deg, #437fa0, #305c78);
+}
+
+.share-button:disabled {
+  pointer-events: none;
+  opacity: 0.65;
+  transform: none;
+  box-shadow: none;
+}
+
+.signature-field {
+  gap: 0.75rem;
+}
+
+.signature-wrapper {
+  position: relative;
+}
+
+.signature-wrapper.has-signature .signature-hint {
+  opacity: 0;
+}
+
+.signature-canvas {
+  width: 100%;
+  height: 180px;
+  border-radius: 16px;
+  border: 1px solid rgba(92, 58, 25, 0.25);
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 8px 14px -12px rgba(63, 41, 16, 0.3);
+  touch-action: none;
+}
+
+.signature-hint {
+  position: absolute;
+  bottom: 14px;
+  right: 18px;
+  font-size: 0.85rem;
+  color: rgba(63, 41, 16, 0.5);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.signature-actions {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.signature-actions .ghost {
+  border-style: solid !important;
+}
+
+.preview-panel {
+  display: grid;
+  justify-items: center;
+  gap: 1.5rem;
+}
+
+.receipt-card {
+  width: min(100%, 420px);
+  background: #fffbf3;
+  border-radius: 28px;
+  padding: 3rem 2.5rem 2.5rem;
+  box-shadow:
+    0 40px 60px -35px rgba(50, 33, 10, 0.55),
+    inset 0 0 0 1px rgba(94, 73, 42, 0.1);
+  border: 1px solid rgba(94, 73, 42, 0.15);
+  position: relative;
+  overflow: hidden;
+  direction: rtl;
+}
+
+.receipt-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0) 68%,
+      rgba(255, 255, 255, 0.7) 100%
+    ),
+    repeating-linear-gradient(
+      180deg,
+      transparent 0,
+      transparent 38px,
+      rgba(197, 180, 150, 0.2) 40px
+    );
+  opacity: 0.8;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.receipt-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: baseline;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px dashed rgba(94, 73, 42, 0.35);
+}
+
+.receipt-header h2 {
+  margin: 0;
+  font-size: 2.4rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: #3f2910;
+}
+
+.receipt-date {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(63, 41, 16, 0.7);
+  font-style: italic;
+}
+
+.receipt-body {
+  position: relative;
+  z-index: 1;
+  padding: 1.75rem 0;
+  display: grid;
+  gap: 1.5rem;
+}
+
+.receipt-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 1.05rem;
+  color: #4a3317;
+}
+
+.receipt-label {
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(63, 41, 16, 0.85);
+}
+
+.receipt-value {
+  font-weight: 500;
+  text-align: right;
+  flex: 1;
+}
+
+.receipt-row.amount-row {
+  align-items: baseline;
+}
+
+.receipt-row .emphasis {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2c1c08;
+}
+
+.receipt-footer {
+  position: relative;
+  z-index: 1;
+  padding-top: 2.75rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.signature-label {
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(63, 41, 16, 0.65);
+  font-size: 0.85rem;
+}
+
+.signature-line {
+  border-bottom: 1px solid rgba(94, 73, 42, 0.45);
+  margin-bottom: 0.35rem;
+  height: 1px;
+}
+
+.signature-display {
+  min-height: 90px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.signature-display img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.signature-placeholder {
+  width: 100%;
+  height: 60px;
+  border-bottom: 1px dashed rgba(94, 73, 42, 0.35);
+}
+
+.print-hint {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(63, 41, 16, 0.7);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .app-shell {
+    padding: 2.5rem 1.25rem 3rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .form-panel {
+    padding: 2rem 1.5rem;
+  }
+
+  .receipt-card {
+    padding: 2.5rem 2rem 2rem;
+  }
+}
+
+@media print {
+  .app-shell {
+    padding: 0;
+    background: none;
+  }
+
+  .form-panel,
+  .print-hint {
+    display: none !important;
+  }
+
+  .preview-panel {
+    justify-items: stretch;
+  }
+
+  .receipt-card {
+    box-shadow: none;
+    margin: 0;
   }
 }
