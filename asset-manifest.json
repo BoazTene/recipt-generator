@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/recipt-generator/static/css/main.b7acce83.css",
+    "main.js": "/recipt-generator/static/js/main.4af19b0a.js",
+    "static/js/453.1f556154.chunk.js": "/recipt-generator/static/js/453.1f556154.chunk.js",
+    "index.html": "/recipt-generator/index.html",
+    "main.b7acce83.css.map": "/recipt-generator/static/css/main.b7acce83.css.map",
+    "main.4af19b0a.js.map": "/recipt-generator/static/js/main.4af19b0a.js.map",
+    "453.1f556154.chunk.js.map": "/recipt-generator/static/js/453.1f556154.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b7acce83.css",
+    "static/js/main.4af19b0a.js"
+  ]
+}
