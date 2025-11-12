@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { toBlob, toPng } from 'html-to-image';
+import jsPDF from 'jspdf';
 import './App.css';
 
 const getDefaultForm = () => {
@@ -189,20 +190,52 @@ function App() {
     setIsGeneratingImage(true);
 
     try {
+      // Capture receipt as high-quality image
       const dataUrl = await toPng(receiptRef.current, {
         cacheBust: true,
         backgroundColor: '#fffbf3',
+        pixelRatio: 3, // High quality for PDF
       });
 
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = `receipt-${Date.now()}.png`;
-      link.click();
+      // Get receipt element's display dimensions (CSS pixels)
+      const receiptElement = receiptRef.current;
+      const receiptWidthPx = receiptElement.offsetWidth;
+      const receiptHeightPx = receiptElement.offsetHeight;
+
+      // Convert CSS pixels to mm (96 DPI standard: 1 inch = 96px = 25.4mm)
+      const pxToMm = 25.4 / 96;
+      const pdfWidth = receiptWidthPx * pxToMm;
+      const pdfHeight = receiptHeightPx * pxToMm;
+
+      // Create PDF with exact receipt dimensions to match display
+      const pdf = new jsPDF({
+        orientation: pdfWidth > pdfHeight ? 'landscape' : 'portrait',
+        unit: 'mm',
+        format: [pdfWidth, pdfHeight],
+        compress: true,
+      });
+
+      // Add high-resolution image to PDF, scaled to match display dimensions
+      // The image captured with pixelRatio: 3 will be rendered at high quality
+      // but sized to match the visual display dimensions
+      pdf.addImage(
+        dataUrl,
+        'PNG',
+        0,
+        0,
+        pdfWidth,
+        pdfHeight,
+        undefined,
+        'FAST'
+      );
+
+      // Save PDF
+      pdf.save(`receipt-${Date.now()}.pdf`);
     } catch (error) {
       // eslint-disable-next-line no-alert
-      alert('לא הצלחנו להוריד את התמונה. נסה שוב.');
+      alert('לא הצלחנו להוריד את הקובץ. נסה שוב.');
       // eslint-disable-next-line no-console
-      console.error('Export image failed', error);
+      console.error('Export PDF failed', error);
     } finally {
       setIsGeneratingImage(false);
     }
@@ -263,7 +296,7 @@ function App() {
         <section className="form-panel">
           <h1>מחולל קבלות</h1>
           <p className="subtitle">
-            מלא את הפרטים כדי לראות תצוגה מקדימה של הקבלה ולייצא אותה כתמונה.
+            מלא את הפרטים כדי לראות תצוגה מקדימה של הקבלה ולייצא אותה כ-PDF.
           </p>
           <form
             className="form-fields"
@@ -334,7 +367,7 @@ function App() {
                 className="primary"
                 disabled={isGeneratingImage}
               >
-                {isGeneratingImage ? 'מייצר...' : 'ייצא כתמונה'}
+                {isGeneratingImage ? 'מייצר...' : 'ייצא כ-PDF'}
               </button>
             </div>
             {shareSupported && (
